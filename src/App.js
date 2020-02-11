@@ -7,12 +7,35 @@ import About from './components/pages/About'
 import FocusableInput from './components/pages/FocusableInput'
 import TodoListTest from './components/pages/TodoListTest'
 import InputChange from './components/pages/InputChange'
+import Birthday from './components/pages/Birthday'
 import Header from './components/layout/Header'
 import uuid from 'uuid'
 import axios from 'axios'
 
 class App extends Component {
   state = {
+    birthdays: [
+      {
+        id: 1,
+        name: "Alexander Alfred",
+        date: "02/09/1989"
+      },
+      {
+        id: 2,
+        name: "Colman Mwakio",
+        date: "09/16/1992"
+      },
+      {
+        id: 3,
+        name: "Ebenezer Casely",
+        date: "10/01/1994"
+      },
+      {
+        id: 4,
+        name: "Joseph Kamau",
+        date: "02/09/1985"
+      }
+    ],
     todos: [
       {
         id: uuid.v4(),
@@ -36,6 +59,20 @@ class App extends Component {
   componentDidMount() {
     axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
     .then(res => {this.setState({todos: res.data})})
+  }
+
+  sortByNameOrDate = (sortby) => {
+    var bday = this.state.birthdays;
+
+    if(sortby === "name"){
+      bday.sort((a, b) => {
+        return a.name > b.name ?  1 : a.name < b.name ? -1 : 0;
+      })
+    } else {
+      bday.sort((a, b) => {
+        return a.date > b.date ?  -1 : a.date < b.date ? 1 : 0;
+      })
+    }
   }
 
   markComplete = (id) => {
@@ -89,6 +126,11 @@ class App extends Component {
             <React.Fragment>
               <AddTodo addTodo={this.addTodo} />
               <Todos todos={this.state.todos} markComplete={this.markComplete} DelTodo={this.DelTodo} />
+            </React.Fragment>
+          )}/>
+          <Route path="/birthday" exact render={props => (
+            <React.Fragment>
+              <Birthday birthdays={this.state.birthdays} sortByNameOrDate={this.sortByNameOrDate} />
             </React.Fragment>
           )}/>
 

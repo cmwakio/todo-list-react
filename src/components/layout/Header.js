@@ -9,6 +9,7 @@ function Header() {
       | <Link style={linkStyle} to="/inputfocus">Input Focus</Link>
       | <Link style={linkStyle} to="/todotest">Todo Test</Link>
       | <Link style={linkStyle} to="/inputchange">Input Change</Link>
+      | <Link style={linkStyle} to="/birthday">Birthday</Link>
     </header>
   )
 }
