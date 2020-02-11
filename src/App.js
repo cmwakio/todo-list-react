@@ -4,6 +4,9 @@ import './App.css';
 import Todos from './components/Todos'
 import AddTodo from './components/AddTodo'
 import About from './components/pages/About'
+import FocusableInput from './components/pages/FocusableInput'
+import TodoListTest from './components/pages/TodoListTest'
+import InputChange from './components/pages/InputChange'
 import Header from './components/layout/Header'
 import uuid from 'uuid'
 import axios from 'axios'
@@ -26,7 +29,8 @@ class App extends Component {
         title: 'Meeting with boss',
         completed: false
       },
-    ]
+    ],
+    focused: false
   }
 
   componentDidMount() {
@@ -70,6 +74,11 @@ class App extends Component {
     
   }
 
+  changeFocus = () => {
+    console.log('changed: ', this.state.focused)
+    this.setState({focused: !this.state.focused})
+  }
+
 
   render() {
     return (
@@ -84,6 +93,26 @@ class App extends Component {
           )}/>
 
           <Route path="/about" component={About} />
+
+          <Route path="/inputfocus" exact render={props => (
+            <React.Fragment>
+              <FocusableInput focused={this.state.focused} changeFocus={this.changeFocus} />
+            </React.Fragment>
+          )}/>
+
+          <Route path="/todotest" exact render={props => (
+            <React.Fragment>
+              <TodoListTest
+                  items={this.props.items}
+                  onItemClick={(item, event) => { console.log(item, event, 'here') }}
+                />
+            </React.Fragment>
+          )}/>
+          <Route path="/inputchange" exact render={props => (
+            <React.Fragment>
+              <InputChange />
+            </React.Fragment>
+          )}/>
           
         </div>
       </Router>
@@ -92,5 +121,15 @@ class App extends Component {
   }
 
 }
+
+App.defaultProps = {
+  focused: false,
+  items: [ { text: 'Buy grocery', done: true },
+  { text: 'Play guitar', done: false },
+  { text: 'Romantic dinner', done: false }
+]
+};
+
+
 
 export default App;
